@@ -20,17 +20,38 @@ metadata:
 
 ## 配置
 
-首次使用前需要配置 WebDAV 连接信息：
+首次使用前需要配置 WebDAV 连接信息。
+
+### 方式一：环境变量（推荐）
 
 ```bash
-# 设置环境变量（推荐）
+# 设置环境变量
 export WEBDAV_URL="https://dav.jianguoyun.com/dav/"
 export WEBDAV_USERNAME="your-email@example.com"
 export WEBDAV_PASSWORD="your-password"
 
-# 或配置到 OpenClaw 环境
-openclaw configure --section webdav
+# 持久化到 ~/.bashrc
+echo 'export WEBDAV_URL="https://dav.jianguoyun.com/dav/"' >> ~/.bashrc
+echo 'export WEBDAV_USERNAME="your-email"' >> ~/.bashrc
+echo 'export WEBDAV_PASSWORD="your-password"' >> ~/.bashrc
+source ~/.bashrc
 ```
+
+### 方式二：配置到 OpenClaw 配置文件
+
+编辑 `~/.openclaw/openclaw.json`，添加 `env` 字段：
+
+```json
+{
+  "env": {
+    "WEBDAV_URL": "https://dav.jianguoyun.com/dav/",
+    "WEBDAV_USERNAME": "your-email",
+    "WEBDAV_PASSWORD": "your-password"
+  }
+}
+```
+
+重启 OpenClaw 后生效。
 
 ## 使用方法
 
