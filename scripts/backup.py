@@ -57,11 +57,31 @@ def check_config():
     """检查 WebDAV 配置"""
     if not WEBDAV_URL or not WEBDAV_USER or not WEBDAV_PASS:
         print("❌ WebDAV 配置缺失")
-        print("请设置以下环境变量：")
+        print("")
+        print("配置方式一：编辑 ~/.openclaw/openclaw.json")
+        print('  {')
+        print('    "skills": {')
+        print('      "entries": {')
+        print('        "webdav-backup": {')
+        print('          "enabled": true,')
+        print('          "env": {')
+        print('            "WEBDAV_URL": "https://dav.jianguoyun.com/dav/",')
+        print('            "WEBDAV_USERNAME": "your-email",')
+        print('            "WEBDAV_PASSWORD": "your-password"')
+        print('          }')
+        print('        }')
+        print('      }')
+        print('    }')
+        print('  }')
+        print("")
+        print("配置方式二：设置环境变量")
         print("  export WEBDAV_URL='https://dav.jianguoyun.com/dav/'")
         print("  export WEBDAV_USERNAME='your-email'")
         print("  export WEBDAV_PASSWORD='your-password'")
         return False
+    
+    print(f"📡 WebDAV URL: {WEBDAV_URL}")
+    print(f"👤 用户名: {WEBDAV_USER}")
     return True
 
 def create_backup(source_dir, backup_name=None):
@@ -120,6 +140,14 @@ def upload_to_webdav(local_file, remote_name):
                 
     except urllib.error.HTTPError as e:
         print(f"❌ HTTP 错误: {e.code} - {e.reason}")
+        if e.code == 404:
+            print("💡 提示: 404 错误通常表示 WebDAV 路径不存在")
+            print("   请检查坚果云网页端是否有对应文件夹")
+            print("   路径示例: https://dav.jianguoyun.com/dav/openclaw-backup/")
+        elif e.code == 401:
+            print("💡 提示: 401 错误表示认证失败")
+            print("   请检查用户名和密码是否正确")
+            print("   注意: 坚果云需要使用'应用密码'而非登录密码")
         return False
     except Exception as e:
         print(f"❌ 上传失败: {e}")
