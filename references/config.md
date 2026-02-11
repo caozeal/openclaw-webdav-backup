@@ -62,8 +62,8 @@ curl -u $WEBDAV_USERNAME:$WEBDAV_PASSWORD -X PROPFIND $WEBDAV_URL
 ```bash
 # 添加到 crontab
 crontab -e
-# 添加行：
-0 2 * * * /usr/bin/python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py >> /var/log/webdav-backup.log 2>&1
+# 添加行（根据实际路径调整）：
+0 2 * * * /usr/bin/python3 ~/.openclaw/workspace/skills/openclaw-webdav-backup/scripts/backup.py >> /tmp/webdav-backup.log 2>&1
 ```
 
 ### 保留策略

@@ -13,11 +13,12 @@ from pathlib import Path
 import urllib.request
 import urllib.error
 
-# 配置
-WORKSPACE = os.environ.get('OPENCLAW_WORKSPACE', '/root/.openclaw/workspace')
+# 配置 - 自动检测 workspace 路径
+DEFAULT_WORKSPACE = os.path.expanduser('~/.openclaw/workspace')
+WORKSPACE = os.environ.get('OPENCLAW_WORKSPACE', DEFAULT_WORKSPACE)
 WEBDAV_URL = os.environ.get('WEBDAV_URL', '')
 WEBDAV_USER = os.environ.get('WEBDAV_USERNAME', '')
-WEBDAV_PASS = os.environ.get('WEBDAV_PASSWORD', '')
+WEBDAV_PASS = os.environ.get('WEBDAV_PASS', os.environ.get('WEBDAV_PASSWORD', ''))
 
 def check_config():
     """检查 WebDAV 配置"""

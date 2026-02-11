@@ -58,14 +58,14 @@ source ~/.bashrc
 ### 手动备份
 
 ```bash
-# 备份整个工作目录
-python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py
+# 备份整个工作目录（自动检测路径）
+python3 ~/.openclaw/workspace/skills/openclaw-webdav-backup/scripts/backup.py
 
 # 备份指定目录
-python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py --source /path/to/data
+python3 ~/.openclaw/workspace/skills/openclaw-webdav-backup/scripts/backup.py --source /path/to/data
 
 # 指定备份文件名
-python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py --name my-backup-2025
+python3 ~/.openclaw/workspace/skills/openclaw-webdav-backup/scripts/backup.py --name my-backup-2025
 ```
 
 ### 自动备份
@@ -73,20 +73,20 @@ python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py --name 
 使用 cron 设置定时备份：
 
 ```bash
-# 每天凌晨2点备份
-cron add --schedule "0 2 * * *" --command "python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py"
+# 每天凌晨2点备份（注意：使用绝对路径）
+cron add --schedule "0 2 * * *" --command "python3 ~/.openclaw/workspace/skills/openclaw-webdav-backup/scripts/backup.py"
 ```
 
 ### 查看备份列表
 
 ```bash
-python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py --list
+python3 ~/.openclaw/workspace/skills/openclaw-webdav-backup/scripts/backup.py --list
 ```
 
 ### 恢复备份
 
 ```bash
-python3 /root/.openclaw/workspace/skills/webdav-backup/scripts/backup.py --restore latest
+python3 ~/.openclaw/workspace/skills/openclaw-webdav-backup/scripts/backup.py --restore latest
 ```
 
 ## 默认备份内容
