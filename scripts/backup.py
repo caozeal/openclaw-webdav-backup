@@ -9,16 +9,49 @@ import sys
 import argparse
 import tarfile
 import datetime
+import json
 from pathlib import Path
 import urllib.request
 import urllib.error
 
-# 配置 - 自动检测 workspace 路径
+
+def load_openclaw_config():
+    """从 openclaw.json 加载 webdav-backup 配置"""
+    config_paths = [
+        os.path.expanduser('~/.openclaw/openclaw.json'),
+        os.path.expanduser('~/.config/openclaw/openclaw.json'),
+    ]
+    
+    for config_path in config_paths:
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, 'r') as f:
+                    config = json.load(f)
+                
+                # 查找 webdav-backup 技能配置
+                skills = config.get('skills', {}).get('entries', {})
+                skill_config = skills.get('webdav-backup', {})
+                
+                if skill_config and skill_config.get('enabled', False):
+                    return skill_config.get('env', {})
+            except Exception:
+                pass
+    
+    return {}
+
+
+# 加载 openclaw.json 配置
+openclaw_env = load_openclaw_config()
+
+# 配置 - 优先级: 环境变量 > openclaw.json > 默认值
 DEFAULT_WORKSPACE = os.path.expanduser('~/.openclaw/workspace')
 WORKSPACE = os.environ.get('OPENCLAW_WORKSPACE', DEFAULT_WORKSPACE)
-WEBDAV_URL = os.environ.get('WEBDAV_URL', '')
-WEBDAV_USER = os.environ.get('WEBDAV_USERNAME', '')
-WEBDAV_PASS = os.environ.get('WEBDAV_PASS', os.environ.get('WEBDAV_PASSWORD', ''))
+WEBDAV_URL = os.environ.get('WEBDAV_URL', openclaw_env.get('WEBDAV_URL', ''))
+WEBDAV_USER = os.environ.get('WEBDAV_USERNAME', openclaw_env.get('WEBDAV_USERNAME', ''))
+WEBDAV_PASS = os.environ.get('WEBDAV_PASS', 
+              os.environ.get('WEBDAV_PASSWORD', 
+              openclaw_env.get('WEBDAV_PASS', 
+              openclaw_env.get('WEBDAV_PASSWORD', ''))))
 
 def check_config():
     """检查 WebDAV 配置"""

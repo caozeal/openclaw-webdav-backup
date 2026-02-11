@@ -22,7 +22,28 @@ metadata:
 
 首次使用前需要配置 WebDAV 连接信息。
 
-### 方式一：环境变量（推荐）
+### 方式一：openclaw.json（推荐）
+
+编辑 `~/.openclaw/openclaw.json`，在 `skills.entries` 中添加：
+
+```json
+{
+  "skills": {
+    "entries": {
+      "webdav-backup": {
+        "enabled": true,
+        "env": {
+          "WEBDAV_URL": "https://dav.jianguoyun.com/dav/",
+          "WEBDAV_USERNAME": "your-email@example.com",
+          "WEBDAV_PASSWORD": "your-password"
+        }
+      }
+    }
+  }
+}
+```
+
+### 方式二：环境变量
 
 ```bash
 # 设置环境变量
@@ -37,21 +58,7 @@ echo 'export WEBDAV_PASSWORD="your-password"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 方式二：配置到 OpenClaw 配置文件
-
-编辑 `~/.openclaw/openclaw.json`，添加 `env` 字段：
-
-```json
-{
-  "env": {
-    "WEBDAV_URL": "https://dav.jianguoyun.com/dav/",
-    "WEBDAV_USERNAME": "your-email",
-    "WEBDAV_PASSWORD": "your-password"
-  }
-}
-```
-
-重启 OpenClaw 后生效。
+> **优先级**: 环境变量 > openclaw.json 配置
 
 ## 使用方法
 
